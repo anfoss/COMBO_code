@@ -104,22 +104,22 @@ setwd("~/Desktop/Research/Postdoc_Krogan/Projects/Collaborations/COMBO/2023_Plas
 
 
 #### Fig 4A
-dd = read.csv('output/lassocoef.csv')
+dd = read.csv('new_biosignature/imp_coef_lasso.csv')
 dd$kk = seq(1, length(dd$Pr_gn), by=1)
 dd = subset(dd,dd$abs>0)
 dd$gn = gsub(".*@","",dd$Pr_gn)
 dd$sss = dd$abs
 dd = head(dd, 10)
-pl =ggplot(dd, aes(x=sss, y=reorder(gn, -sss)))+geom_bar(stat='identity', fill='#3C5488B2')+
+pl =ggplot(dd, aes(x=sss, y=reorder(gn, -sss)))+geom_bar(stat='identity', fill='grey50')+
   xlab('Abs(feature importance)LASSO')+theme_Publication()+rmback+fix_plot+
   scale_x_continuous(expand=c(0,0))+ylab('Top10 features')
 
-
-ggsave(pl= pl, filename = 'figures/lassimpo.pdf', height = 2.5, width = 2.5)
+pl
+ggsave(pl= pl, filename = 'revision_figures/Fig4_A.pdf', height = 2.5, width = 2.5)
 
 
 ### Fig 4 B
-dd = read.csv('new_biosignature/20250411_ROC_CV.csv')
+dd = read.csv('new_biosignature/20250423_ROC_CV.csv')
 pl=ggplot(dd, aes(x=fpr, y=tpr, group=clf, col=clf))+geom_line(size=0.5, alpha=0.9)+
   geom_point(aes(x=0.3, y=0.9), colour="grey20", size=0.5)+
   scale_colour_viridis_d(option='turbo')+
@@ -138,7 +138,7 @@ ggsave(pl= pl, filename = 'revision_figures/Fig4_B.pdf', height = 3, width = 3)
 #### Fig 4 C
 dd = read.csv('new_biosignature/biosignature_output.csv')
 dd$nfeat = as.character(dd$nfeat)
-pl =ggplot(dd, aes(x=X1, y=nfeat))+geom_bar(stat='identity', fill='grey50')+
+pl =ggplot(dd, aes(x=prec70sens, y=nfeat))+geom_bar(stat='identity', fill='grey50')+
   xlab('% Sensitivity at 70% specificity')+theme_Publication()+rmback+fix_plot+
   scale_x_continuous(expand=c(0,0))+ylab('Nr features')+geom_vline(xintercept = 0.9, linetype='dashed', col='darkred')
 pl
@@ -213,6 +213,7 @@ ggsave(pl= pl, filename = 'revision_figures/Fig5A.pdf', height = 2.5, width = 3)
 
 
 dd = read.csv('new_biosignature/lda_projection.csv')
+
 dd$class = as.character(dd$class)
 pl = ggplot(dd, aes(x=X0, y=X1, col=class))+geom_point(size=0.5, alpha=0.75)+xlab('PC1')+ylab('PC2')+theme_Publication()+rmback+
   scale_color_colorblind()+guides(col=guide_legend(nrow=2,byrow=TRUE))+
@@ -255,8 +256,6 @@ pl = ggplot(dd, aes(x=X0, y=X1, col=class))+geom_point(size=1, alpha=1)+
   stat_ellipse(geom = "polygon",
                aes(fill = class), 
                alpha = 0.1)
-
-
 pl
 ggsave(filename = 'revision_figures/SupFig_pca_healthy_TB.pdf', pl, height = 3, width = 6)
 
